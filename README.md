@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AWS Amplify + Next.js 15 (Gen 2)
 
-## Getting Started
+Este é um projeto **Next.js 15** otimizado para deploy no **AWS Amplify Gen 2**, utilizando **pnpm** e foco em alta performance e estabilidade de build.
 
-First, run the development server:
+## 🚀 Tecnologias
 
+- **Next.js 15** (App Router)
+- **React 19**
+- **AWS Amplify Gen 2** (Infraestrutura como Código)
+- **Tailwind CSS 4**
+- **pnpm** (Gerenciador de pacotes)
+
+---
+
+## 🛠️ Soluções Implementadas
+
+### 1. Normalização de Rotas (Trailing Slash)
+Para resolver o comportamento padrão do AWS Amplify/S3 que adiciona uma barra final (`/`) às URLs, implementamos uma lógica de normalização no `app/page.tsx` e no componente de `/version`.
+- **Problema**: O S3 redireciona `/version` para `/version/`, quebrando validações rígidas de rota.
+- **Solução**: Uso do hook `usePathname` com limpeza de caracteres via regex:
+  ```tsx
+  const normalizedPath = pathname?.replace(/\/$/, '') || '';
+  ```
+
+### 2. Otimização de Build (Anti-OOM)
+Configuramos o ambiente de build do Amplify para suportar aplicações robustas sem erros de "Out of Memory":
+- **Swap de Memória**: Adição de um arquivo de **16GB de Swap** no disco durante o `preBuild` para expandir a RAM disponível.
+- **Heap Size**: Aumento do limite de memória do Node.js para **12GB** (`--max-old-space-size=12288`).
+- **Cache Inteligente**: Persistência seletiva das pastas `.next/cache` e `node_modules` para builds incrementais rápidos.
+
+### 3. Registro NPM
+Configuração via `.npmrc` local para garantir que as dependências públicas sejam baixadas diretamente do `registry.npmjs.org`, evitando conflitos com registros privados ou CodeArtifacts locais.
+
+---
+
+## 💻 Desenvolvimento Local
+
+Primeiro, instale as dependências:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Inicie o servidor de desenvolvimento:
+```bash
+pnpm dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para validar o build de produção exatamente como ele rodará no Amplify:
+```bash
+pnpm build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🔗 Links Úteis
 
-To learn more about Next.js, take a look at the following resources:
+- **Rota de Versão**: [http://localhost:3000/version](http://localhost:3000/version) (Para testes de normalização de path)
+- **Documentação Next.js**: [https://nextjs.org/docs](https://nextjs.org/docs)
+- **AWS Amplify Gen 2**: [https://docs.amplify.aws/gen2/](https://docs.amplify.aws/gen2/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 Licença
+Este projeto é privado e de uso restrito.
