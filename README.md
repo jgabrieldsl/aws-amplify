@@ -28,9 +28,6 @@ Configuramos o ambiente de build do Amplify para suportar aplicações robustas 
 - **Heap Size**: Aumento do limite de memória do Node.js para **12GB** (`--max-old-space-size=12288`).
 - **Cache Inteligente**: Persistência seletiva das pastas `.next/cache` e `node_modules` para builds incrementais rápidos.
 
-### 3. Registro NPM
-Configuração via `.npmrc` local para garantir que as dependências públicas sejam baixadas diretamente do `registry.npmjs.org`, evitando conflitos com registros privados ou CodeArtifacts locais.
-
 ---
 
 ## 💻 Desenvolvimento Local
