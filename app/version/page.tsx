@@ -1,0 +1,94 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+
+export default function VersionPage() {
+  const currentPathname = usePathname() || '';
+  const normalizedPath = currentPathname.replace(/\/$/, '');
+
+  const versionInfo = {
+    version: '1.2.4-stable',
+    build: '2024.05.14.001',
+    environment: 'Production (AWS Amplify)',
+    commit: 'cf310db',
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0b] text-white flex flex-col items-center justify-center p-6 font-sans">
+      <div className="max-w-md w-full bg-[#161618] border border-white/10 rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+        {/* Subtle gradient glow */}
+        <div className="absolute -top-24 -left-24 w-48 h-48 bg-blue-500/10 blur-[80px] rounded-full group-hover:bg-blue-500/20 transition-all duration-700"></div>
+        <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[80px] rounded-full group-hover:bg-purple-500/20 transition-all duration-700"></div>
+
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight">System Version</h1>
+          </div>
+
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white/5 border border-white/5 rounded-xl p-4">
+                <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Version</p>
+                <p className="text-lg font-mono font-medium text-blue-400">{versionInfo.version}</p>
+              </div>
+              <div className="bg-white/5 border border-white/5 rounded-xl p-4">
+                <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Environment</p>
+                <p className="text-lg font-medium text-green-400">Production</p>
+              </div>
+            </div>
+
+            <div className="bg-white/5 border border-white/5 rounded-xl p-4">
+              <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Build ID</p>
+              <p className="text-sm font-mono text-white/80">{versionInfo.build}</p>
+            </div>
+
+            <div className="pt-4 border-t border-white/10">
+              <h2 className="text-sm font-semibold text-white/60 mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Route Debugger
+              </h2>
+              <div className="space-y-3 font-mono text-xs">
+                <div className="flex justify-between items-center bg-black/40 p-3 rounded-lg border border-white/5">
+                  <span className="text-white/40">Raw Pathname:</span>
+                  <span className="text-pink-400">&quot;{currentPathname}&quot;</span>
+                </div>
+                <div className="flex justify-between items-center bg-black/40 p-3 rounded-lg border border-white/5">
+                  <span className="text-white/40">Normalized:</span>
+                  <span className="text-cyan-400">&quot;{normalizedPath}&quot;</span>
+                </div>
+                <div className="flex justify-between items-center bg-black/40 p-3 rounded-lg border border-white/5">
+                  <span className="text-white/40">Match Success:</span>
+                  <span className={normalizedPath === '/version' ? 'text-green-400' : 'text-red-400'}>
+                    {normalizedPath === '/version' ? 'TRUE' : 'FALSE'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-xs text-white/20 italic">
+              Automatically handling AWS S3/Amplify trailing slash redirections.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-12 flex gap-4">
+        <a href="/version" className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm transition-colors">
+          Test /version
+        </a>
+        <a href="/version/" className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm transition-colors">
+          Test /version/
+        </a>
+      </div>
+    </div>
+  );
+}
